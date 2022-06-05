@@ -6,101 +6,290 @@ public class Program
     public class Library
     {
         private List<Book> books = new List<Book>();
-        public void ReturnBook()
-        {//how do I display library to do list of all non available books?
-            int bookReturnChoice = 0;
-            bool whichBook = true;
-            bool outOrNot = true;
-            while (whichBook)
+
+        public Book[] SeeAllBooks()
+        {
+            return books.ToArray();
+        }
+        public Book[] SeeBooksOfStatusX(bookStatus status)
+        {
+            List<Book> newBookList = new List<Book>();
+            foreach(Book book in books)
             {
-                Console.WriteLine("Which book would you like to return? Please pick a book that is out by book ID");
-                string bookToReturn = Console.ReadLine();
+                if (book.status == status)
+                {
+                    newBookList.Add(book);
+                }
+            }
+            return newBookList.ToArray();
+        }
+        public void WhichList()
+        {
+            string validNum = "";
+            int listChoice = 0;
+            bool validList = true;
+            bookStatus status = bookStatus.Available;
+            Console.WriteLine();
+            Console.WriteLine("Which list would you like to see?");
+            Console.WriteLine("Enter 1 to see all books.");
+            Console.WriteLine("Enter 2 to see all books available to be checked out.");
+            Console.WriteLine("Enter 3 to see all book that are out and need returned.");
+            Console.WriteLine("Enter 4 to see all books that need repair.");
+            Console.WriteLine("Enter 5 to see all new arrivals and when they are in.");
+            Console.WriteLine("Enter anything else to go back to main menu.");
+            validNum = Console.ReadLine();
+            while (validList)
+            {
                 try
                 {
-                    bookReturnChoice = Convert.ToInt32(bookToReturn);
-                    whichBook = false;
+                    listChoice = int.Parse(validNum);
+                    validList = false;
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine();
                     Console.WriteLine("Sorry, that is not valid.");
-                    whichBook = true;
-                }
-                if (whichBook == false)
-                {
-                    //when I got to this point I realized it may be smarter to use method with returnbook(Book[] books) 
-                    //this way is better I think because we can call that SPECIFIC array/list
-                    /*foreach (Book book in outBooks)
-                     * 
-                     * if (book.bookId == bookReturnChoice)
-                     *      if(book.status == bookStatus.Out)
-                     *      {Console.WriteLine("Thank you for returning the book.");
-                     *      outOrNot = false;
-                    else                   
-                    Console.WriteLine("That book is not currently out.");
-                    outOrNot = true;
-                    } */
+                    validList = true;
                 }
             }
+            if (validList == false)
+            {
+                if (listChoice == 1)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Here is a list of all books:");
+                    foreach(Book book in SeeAllBooks())
+                    {
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author} is currently {book.status}.");
+                    }
+                }
+                else if (listChoice == 2)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Here is all available books:");
+                    status = bookStatus.Available;
+
+                    foreach(Book book in SeeBooksOfStatusX(status))
+                    {
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author}");
+                    }
+                }
+                else if (listChoice == 3)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Here is all books that are out:");
+                    status = bookStatus.Out;
+                    
+                    foreach(Book book in SeeBooksOfStatusX(status))
+                    {
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author}");
+                    }
+                }
+                else if (listChoice == 4)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Here is all books that need repair:");
+                    status = bookStatus.needsRepair;
+
+                    foreach(Book book in SeeBooksOfStatusX(status))
+                    {
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author}");
+                    }
+                }
+                else if (listChoice == 5)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Here is all books that are new arrivals:");
+                    status = bookStatus.notInYet;
+
+                    foreach(Book book in SeeBooksOfStatusX(status))
+                    {
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Returning to main menu.");
+                }
+            }
+        }
+        public Book[] AuthorSearch()
+        {
+            var booksByAuthor = new List<Book>();
+            Console.WriteLine();
+            Console.WriteLine("Who is the author you would like to search for?");
+            string authorSearch = Console.ReadLine();
+            foreach (Book book in books)
+            {
+                if (book.author.Contains(authorSearch,StringComparison.CurrentCultureIgnoreCase))
+                {
+                    booksByAuthor.Add(book);
+                }
+            }
+            Console.WriteLine($"Here are the books found by {authorSearch}:");
+            return booksByAuthor.ToArray();
+        }
+        public Book[] KeywordSearch()
+        {
+            var keyBooks = new List<Book>();
+            Console.WriteLine();
+            Console.WriteLine("What is the keyword you would like to search for?");
+            string keySearch = Console.ReadLine();
+            foreach(Book book in books)
+            {
+                if (book.title.Contains(keySearch,StringComparison.CurrentCultureIgnoreCase))
+                {
+                    keyBooks.Add(book);
+                }
+            }
+            Console.WriteLine($"Here are the books found with the {keySearch} keyword:");
+            return keyBooks.ToArray();
+        }
+        public void WhichSearch()
+        {
+            string validNum = "";
+            int searchOption = 0;
+            bool validSearch = true;
+            Console.WriteLine();
+            Console.WriteLine("How would you like to search?");
+            Console.WriteLine("Enter 1 for search by author.");
+            Console.WriteLine("Enter 2 for search by keyword.");
+            Console.WriteLine("Enter anything else to return to main menu.");
+            validNum = Console.ReadLine();
+            
+            while (validSearch)
+            {
+                try
+                {
+                    searchOption = int.Parse(validNum);
+                    validSearch = false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Sorry, that is not valid.");
+                    validSearch = true;
+                }
+            }
+            if (validSearch == false)
+            {
+                if (searchOption == 1)
+                {
+                    Console.WriteLine();
+                    foreach (Book book in AuthorSearch())
+                    {
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author}.  Status: {book.status}");
+                    }
+                }
+                else if (searchOption == 2)
+                {
+                    Console.WriteLine();
+                    foreach (Book book in KeywordSearch())
+                    {
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author}.  Status: {book.status}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Returning to main menu.");
+                }
+            }
+        }
+        public int ValidBook()
+        {
+            bool numOnList = true;
+            int userChoice = 0;
+            do
+            {
+                Console.WriteLine();
+                Console.WriteLine("Pick your book by user ID#: (1-14).");
+                string isInt = Console.ReadLine();
+                bool respIsInt = false;
+                respIsInt = int.TryParse(isInt, out userChoice);
+                if (respIsInt == false)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Sorry, that is not a valid number.");
+                }
+                if (respIsInt)
+                {
+                    if (userChoice < 15 && userChoice > 0)
+                    {
+                        numOnList = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Sorry, that is not valid number.");
+                        numOnList = true;
+                    }
+                }
+            } while (numOnList);
+            return userChoice;
+        }
+
+        public void ReturnBook()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Which book would you like to return?");
+            int bookIn = ValidBook();
+
+            foreach (Book book in books)
+            {
+                if (book.bookId == bookIn)
+                {
+                    if (book.status == bookStatus.Out)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Thank you for returning this book");
+                        book.status = bookStatus.Available;
+                        break;
+                    }
+                    else if (book.status != bookStatus.Out)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("It looks like that book doesn't currently need to be returned.");
+                    }
+                }
+            }     
         }
 
         public Library( Book[] newBookInventory )
         {
-            // you could just move the book creation code here
-            // That works
-            // But imagine, what if you had another library someplace else with different books?
             if (newBookInventory != null)
                 books.AddRange(newBookInventory);
         }
        
         public void CheckOutBook()
         {
-
-            string isABook = "";
-            int bookOut = 0;
-            bool whichBook = true;
-
-            while (whichBook)
-            {
-                Console.WriteLine("Which book would you like to check out?  Pick a number 1-14.");
-                isABook = Console.ReadLine();
-                try
-                {
-
-                    bookOut = int.Parse(isABook);
-                    if (bookOut < 15 && bookOut > 0)
-                    {
-                        whichBook = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Sorry, that is not valid.");
-                        whichBook = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Sorry, that is not valid.");
-                    whichBook = true;
-                }
-            }
+            Console.WriteLine();
+            Console.WriteLine("Which book would you like to check out?");
+            int bookOut = ValidBook();
+            string bookOutstring = "";
             foreach (Book book in books)
             {
                 if(book.bookId == bookOut)
                 {
                     if (book.status == bookStatus.Out)
                     {
+                        Console.WriteLine();
                         Console.WriteLine("Sorry, that book is out!");
                     }
                     else if (book.status == bookStatus.needsRepair)
                     {
+                        Console.WriteLine();
                         Console.WriteLine("Sorry, that book is being repaired at the moment.");
                     }
                     else if (book.status == bookStatus.notInYet)
                     {
+                        Console.WriteLine();
                         Console.WriteLine("Sorry, that has not arrived at our library yet.");
                     }
                     else
                     {
+                        Console.WriteLine();
                         DateTime dueDate = DateTime.Now.Date.AddDays(14);
                         Console.WriteLine($"Great you picked {book.title} by {book.author}, this is due back to us by: " + dueDate.ToString("d"));
                     }
@@ -108,16 +297,10 @@ public class Program
             }
         }
     }
+  
     public static void Main(string[] args)
     {
-        //create book class with title author and status(check in or out or waiting for new arrival)
-        //store books in list of 12 min
-        //allow user to display entire list
-        // search book by title
-        //select a book from the list to check out
-        //if checked out, let user know
-        //if available, assign due date 2 weeks from check out date
-        //allow user to return a book
+        
         
         List<Book> books = new List<Book>();
         Book one = new Book("C# For Dummies", "David Luxford", bookStatus.Out, 1);
@@ -140,102 +323,70 @@ public class Program
         var nonAvaBooks = new Book[] { one, three, four, five, seven, eight, ten, eleven, twelve };
         var outBooks = new Book[] { one, five, twelve };
         Library allBooks = new Library(bookList);
-        // if I make these a library? will it mess up my method?
-        //Library allAvaBooks = new Library(avaBooks);
-       // Library allnonAva = new Library(nonAvaBooks);
 
-        // So lets say we use an instance of a Library class to represent the library we are working with
-        // If there are two branches of the library, then we would create two instances
-        // So each instance has all the same functionality, but different books available
-        // I need to tell each branch what books it has in it's inventory when I create that object.
-        // So therefore the Library constructor takes a Book[].  The main method passes that to the constructor,
-        // and then I have a working library.
-
-
-        Console.WriteLine("Hello, welcome to the library!");
-        Console.WriteLine("Would you like to see the book options? (y/n?)");
-        string seeListofAll = Console.ReadLine();
-        if (seeListofAll.ToUpper() == "Y")
-        {
-            SeeList(bookList);
-        }
-
-        //AFTER YOU WRITE THE DIFFERENT OPTIONS YOU CAN SIMPLIFY TO HOW CAN I HELP TODAY?
-        //THEN A LIST OF OPTIONS TO SEARCH BY AUTHOR,KEYWORD, ETC. SEE LIST OF EACH KIND, GET OR RETURN BOOK.
-        bool searchVal = true;
-        bool searchNumVal = true;
+       
+        bool terminalLoop = true;
         int optSearch = 0;
-
-        while (searchNumVal)
+        Console.WriteLine("Welcome to The Library Terminal!");
+        while (terminalLoop)
         {
+                bool searchVal = true;
+                Console.WriteLine();
+                Console.WriteLine("What would you like to do?  Enter the corresponding number.");
+                Console.WriteLine("1. See list.");
+                Console.WriteLine("2. Search.");
+                Console.WriteLine("3. Return book.");
+                Console.WriteLine("4. Check out book.");
+                Console.WriteLine("5. Quit.");
+                string searchOptions = Console.ReadLine();
+            while (searchVal)
+            {
+                try
+                {
+                    optSearch = int.Parse(searchOptions);
+                    searchVal = false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Sorry, that is not valid.");
+                    searchVal = true;
+                }
+            }
 
-            Console.WriteLine("Push 1 to search for author.");
-            Console.WriteLine("Push 2 to search by title keyword.");
-            Console.WriteLine("OR push 3 if you wish not to search.");
-            string searchOptions = Console.ReadLine();
-            try
-            {
-                optSearch = int.Parse(searchOptions);
-                searchVal = false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Sorry, that is not valid.");
-                searchVal = true;
-            }
             if (searchVal == false)
             {
                 if (optSearch == 1)
                 {
-                    //method for search by author
-                    searchNumVal = false;
+                    allBooks.WhichList();
                 }
                 else if (optSearch == 2)
                 {
-                    //method for title keyword search
-                    searchNumVal = false;
+                    allBooks.WhichSearch();
                 }
                 else if (optSearch == 3)
                 {
-                    Console.WriteLine("Understood.");
-                    searchNumVal = false;
+                    allBooks.ReturnBook();
+                }
+                else if (optSearch == 4)
+                {
+                    allBooks.CheckOutBook();
+                }
+                else if (optSearch == 5)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Thanks and have a great day!");
+                    terminalLoop = false;
                 }
                 else
                 {
-                    Console.WriteLine("Sorry, that is not valid.");
-                    searchNumVal = true;
+                    //Easter Egg
                 }
-            }//this loop has not been tested completely and probably needs to be broken down into methods.
-        }
-        Console.WriteLine("Would you like to return a book? (y/n?)");
-        string retBook = Console.ReadLine();
-        if (retBook.ToUpper() == "Y")
-        {
-            Console.WriteLine("Here is the list of books that are out in order by Book ID#");
-            foreach (Book book in outBooks)
-            {
-                Console.WriteLine($"{book.bookId}. {book.title} by {book.author}.");
             }
-            //method to return book
         }
-    }
-
-    public static void ReturnBook()
-    {
-        Console.WriteLine("Which book would you like to return?");
-        int bookReturn = int.Parse(Console.ReadLine());
         
-
+        
     }
-
-    public static void SeeList(Book[] listOptions)
-    {
-        foreach (Book book in listOptions)
-        {
-            Console.WriteLine($"{book.bookId}. '{book.title}' by {book.author}");
-        }
-    }
-
 }
 public enum bookStatus
 {
@@ -255,8 +406,8 @@ public class Book
     {
         title = newTitle;
         author = newAuthor;
-        status = newStatus; // might need to do subclass for checked out books for due date
+        status = newStatus; 
         bookId = newBookId;
     }
-    
+   
 }
