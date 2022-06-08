@@ -29,17 +29,18 @@ public class Program
             int listChoice = 0;
             bool validList = true;
             bookStatus status = bookStatus.Available;
-            Console.WriteLine();
-            Console.WriteLine("Which list would you like to see?");
-            Console.WriteLine("Enter 1 to see all books.");
-            Console.WriteLine("Enter 2 to see all books available to be checked out.");
-            Console.WriteLine("Enter 3 to see all book that are out and need returned.");
-            Console.WriteLine("Enter 4 to see all books that need repair.");
-            Console.WriteLine("Enter 5 to see all new arrivals and when they are in.");
-            Console.WriteLine("Enter anything else to go back to main menu.");
-            validNum = Console.ReadLine();
             while (validList)
             {
+                Console.WriteLine();
+                Console.WriteLine("Which list would you like to see?");
+                Console.WriteLine("Enter 1 to see all books.");
+                Console.WriteLine("Enter 2 to see all books available to be checked out.");
+                Console.WriteLine("Enter 3 to see all book that are out and need returned.");
+                Console.WriteLine("Enter 4 to see all books that need repair.");
+                Console.WriteLine("Enter 5 to see all new arrivals and when they are in.");
+                Console.WriteLine("Enter any other number to go back to main menu.");
+                validNum = Console.ReadLine();
+            
                 try
                 {
                     listChoice = int.Parse(validNum);
@@ -151,15 +152,15 @@ public class Program
             string validNum = "";
             int searchOption = 0;
             bool validSearch = true;
-            Console.WriteLine();
-            Console.WriteLine("How would you like to search?");
-            Console.WriteLine("Enter 1 for search by author.");
-            Console.WriteLine("Enter 2 for search by keyword.");
-            Console.WriteLine("Enter anything else to return to main menu.");
-            validNum = Console.ReadLine();
-            
             while (validSearch)
             {
+                Console.WriteLine();
+                Console.WriteLine("How would you like to search?");
+                Console.WriteLine("Enter 1 for search by author.");
+                Console.WriteLine("Enter 2 for search by keyword.");
+                Console.WriteLine("Enter any other number to return to main menu.");
+                validNum = Console.ReadLine();           
+            
                 try
                 {
                     searchOption = int.Parse(validNum);
@@ -262,6 +263,14 @@ public class Program
                 books.AddRange(newBookInventory);
         }
        
+        public void SecretMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Hello, welcome to the secret menu!");
+            Console.WriteLine("As it turns out, we actually have every book your heart desires, hehe.");
+            Console.WriteLine("Which book would you like to check out?");
+            int bookOut = ValidBook();
+        }
         public void CheckOutBook()
         {
             Console.WriteLine();
@@ -311,14 +320,15 @@ public class Program
         Book six = new Book("My Cats are Cute", "Real John Smith", bookStatus.Available, 6);
         Book seven = new Book("Things I Learned in Prison", "Gee Wiz", bookStatus.needsRepair, 7);
         Book eight = new Book("The Healing Properties of Corn", "Doctor Cob", bookStatus.notInYet, 8);
-        Book nine = new Book("Oops, I wrote a Book", "Socrates", bookStatus.Available, 9);
+        Book nine = new Book("Hold on, I'm thinking", "Socrates", bookStatus.Available, 9);
         Book ten = new Book("Seven Deadly Sins but I made Another", "Kaige Miller", bookStatus.needsRepair, 10);
         Book eleven = new Book("How to Avoid Being Kidnapped by Kaige Miller", "Kaige Miller", bookStatus.notInYet, 11);
         Book twelve = new Book("How to Name Your Children", "John Smith's Parents", bookStatus.Out, 12);
         Book thirteen = new Book("Why Anime is Overrated and Ruining Society", "ACODESKI", bookStatus.Available, 13);
         Book fourteen = new Book("Why Dragon Ball Z is the Superior Anime", "Dominion", bookStatus.Available, 14);
+        Book fifteen = new Book("Oops, I wrote a Book", "Hussein Yassine", bookStatus.Available, 15);
 
-        var bookList = new Book[] { one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen };
+        var bookList = new Book[] { one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen };
         var avaBooks = new Book[] { two, six, nine, thirteen, fourteen };
         var nonAvaBooks = new Book[] { one, three, four, five, seven, eight, ten, eleven, twelve };
         var outBooks = new Book[] { one, five, twelve };
@@ -330,28 +340,28 @@ public class Program
         Console.WriteLine("Welcome to The Library Terminal!");
         while (terminalLoop)
         {
-                bool searchVal = true;
-                Console.WriteLine();
-                Console.WriteLine("What would you like to do?  Enter the corresponding number.");
-                Console.WriteLine("1. See list.");
-                Console.WriteLine("2. Search.");
-                Console.WriteLine("3. Return book.");
-                Console.WriteLine("4. Check out book.");
-                Console.WriteLine("5. Quit.");
-                string searchOptions = Console.ReadLine();
+            bool searchVal = true;
+            Console.WriteLine();
+            Console.WriteLine("What would you like to do?  Enter the corresponding number.");
+            Console.WriteLine("1. See list.");
+            Console.WriteLine("2. Search.");
+            Console.WriteLine("3. Return book.");
+            Console.WriteLine("4. Check out book.");
+            Console.WriteLine("5. Quit.");
+            string searchOptions = Console.ReadLine();
             while (searchVal)
-            {
+            {                            
                 try
                 {
-                    optSearch = int.Parse(searchOptions);
-                    searchVal = false;
+                        optSearch = int.Parse(searchOptions);
+                        searchVal = false;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("Sorry, that is not valid.");
-                    searchVal = true;
-                }
+                        Console.WriteLine();
+                        Console.WriteLine("Sorry, that is not valid.");
+                        searchVal = true;
+                }                
             }
 
             if (searchVal == false)
@@ -378,9 +388,19 @@ public class Program
                     Console.WriteLine("Thanks and have a great day!");
                     terminalLoop = false;
                 }
-                else
+                else if (optSearch > 10)
                 {
-                    //Easter Egg
+                    //secret menu method
+                }    
+                else 
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Never gonna give you up");
+                    Console.WriteLine("Never gonna let you down");
+                    Console.WriteLine("Never gonna run around and desert you");
+                    Console.WriteLine("Never gonna make you cry");
+                    Console.WriteLine("Never gonna say goodbye");
+                    Console.WriteLine("Never gonna tell a lie and hurt you");
                 }
             }
         }
