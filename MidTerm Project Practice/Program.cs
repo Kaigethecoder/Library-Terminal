@@ -205,7 +205,7 @@ public class Program
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("Pick your book by user ID#: (1-14).");
+                Console.WriteLine("Pick your book by user ID#: (1-15).");
                 string isInt = Console.ReadLine();
                 bool respIsInt = false;
                 respIsInt = int.TryParse(isInt, out userChoice);
@@ -216,7 +216,7 @@ public class Program
                 }
                 if (respIsInt)
                 {
-                    if (userChoice < 15 && userChoice > 0)
+                    if (userChoice < 16 && userChoice > 0)
                     {
                         numOnList = false;
                     }
@@ -270,13 +270,23 @@ public class Program
             Console.WriteLine("As it turns out, we actually have every book your heart desires, hehe.");
             Console.WriteLine("Which book would you like to check out?");
             int bookOut = ValidBook();
+
+            foreach (Book book in books)
+            {
+                if ( book.bookId == bookOut)
+                {
+                    Console.WriteLine();
+                    DateTime dueDate = DateTime.Now.Date.AddDays(14);
+                    Console.WriteLine($"Great you picked {book.title} by {book.author}, this is due back to us by:" + dueDate.ToString("d"));
+                }
+            }
         }
         public void CheckOutBook()
         {
             Console.WriteLine();
             Console.WriteLine("Which book would you like to check out?");
             int bookOut = ValidBook();
-            string bookOutstring = "";
+
             foreach (Book book in books)
             {
                 if(book.bookId == bookOut)
@@ -390,7 +400,7 @@ public class Program
                 }
                 else if (optSearch > 10)
                 {
-                    //secret menu method
+                    allBooks.SecretMenu();
                 }    
                 else 
                 {
