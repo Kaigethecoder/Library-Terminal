@@ -277,7 +277,7 @@ public class Program
                 {
                     Console.WriteLine();
                     DateTime dueDate = DateTime.Now.Date.AddDays(14);
-                    Console.WriteLine($"Great you picked {book.title} by {book.author}, this is due back to us by:" + dueDate.ToString("d"));
+                    Console.WriteLine($"Great you picked {book.title} by {book.author}, this is due back to us by: " + dueDate.ToString("d"));
                 }
             }
         }
@@ -351,16 +351,18 @@ public class Program
         while (terminalLoop)
         {
             bool searchVal = true;
-            Console.WriteLine();
-            Console.WriteLine("What would you like to do?  Enter the corresponding number.");
-            Console.WriteLine("1. See list.");
-            Console.WriteLine("2. Search.");
-            Console.WriteLine("3. Return book.");
-            Console.WriteLine("4. Check out book.");
-            Console.WriteLine("5. Quit.");
-            string searchOptions = Console.ReadLine();
-            while (searchVal)
-            {                            
+
+            while (searchVal) 
+            { 
+                Console.WriteLine();
+                Console.WriteLine("What would you like to do?  Enter the corresponding number.");
+                Console.WriteLine("1. See list.");
+                Console.WriteLine("2. Search.");
+                Console.WriteLine("3. Return book.");
+                Console.WriteLine("4. Check out book.");
+                Console.WriteLine("5. Quit.");
+                string searchOptions = Console.ReadLine();
+                                       
                 try
                 {
                         optSearch = int.Parse(searchOptions);
