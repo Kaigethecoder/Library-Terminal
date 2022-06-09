@@ -37,7 +37,7 @@ public class Program
                 Console.WriteLine("Enter 2 to see all books available to be checked out.");
                 Console.WriteLine("Enter 3 to see all book that are out and need returned.");
                 Console.WriteLine("Enter 4 to see all books that need repair.");
-                Console.WriteLine("Enter 5 to see all new arrivals and when they are in.");
+                Console.WriteLine("Enter 5 to see all new arrivals.");
                 Console.WriteLine("Enter any other number to go back to main menu.");
                 validNum = Console.ReadLine();
             
@@ -61,7 +61,7 @@ public class Program
                     Console.WriteLine("Here is a list of all books:");
                     foreach(Book book in SeeAllBooks())
                     {
-                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author} is currently {book.status}.");
+                        Console.WriteLine($"{book.bookId}. {book.title} by {book.author}. Status: {book.status}.");
                     }
                 }
                 else if (listChoice == 2)
@@ -100,7 +100,7 @@ public class Program
                 else if (listChoice == 5)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Here is all books that are new arrivals:");
+                    Console.WriteLine("Here is all books that are coming soon: ");
                     status = bookStatus.notInYet;
 
                     foreach(Book book in SeeBooksOfStatusX(status))
@@ -308,6 +308,7 @@ public class Program
                     }
                     else
                     {
+                        book.status = bookStatus.Out;
                         Console.WriteLine();
                         DateTime dueDate = DateTime.Now.Date.AddDays(14);
                         Console.WriteLine($"Great you picked {book.title} by {book.author}, this is due back to us by: " + dueDate.ToString("d"));
